@@ -22,6 +22,14 @@ namespace baron {
 		}
 		return res;
 	}
+	
+	template<class I, class T, typename Function>
+	T accumulate(T base, I first, I last,  Function f) {
+		while( first != last) {
+			base = f(base, *(first++));
+		}
+		return base;
+	}
 
 }
 
