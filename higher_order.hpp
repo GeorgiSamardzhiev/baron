@@ -23,6 +23,14 @@ namespace baron {
 		return res;
 	}
 	
+	template<typename T, class C, typename Function>
+	T accumulate(T base, C list , Function f) {
+		for (typename C::iterator it = list.begin(); it != list.end(); ++it) {
+			base = f(base, *it);
+		}
+		return base;
+	}
+	
 	template<class I, class T, typename Function>
 	T accumulate(T base, I first, I last,  Function f) {
 		while( first != last) {
