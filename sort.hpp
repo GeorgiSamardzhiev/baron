@@ -4,11 +4,12 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <algorithm>
 
 namespace baron {
 
 	template <typename T>
-	void insertionSort(T* A, int& size) {
+	void insertionSort(T* A, const int& size) {
 		for (int i = 1; i<size; i++) {
 			T pivot = A[i];
 			int j = 0;
@@ -21,7 +22,7 @@ namespace baron {
 	}
 
 	template <typename T>
-	void selectionSort(T* arr, int& size) {
+	void selectionSort(T* arr, const int& size) {
 		for (int i = 0; i < size - 1; i++) {
 			int minIndex = i;
 			for (int j = i + 1; j < size; j++) {
@@ -35,7 +36,7 @@ namespace baron {
 		}
 	}
 
-	void countingSort(int* arr, int& size) {
+	void countingSort(int* arr, const int& size) {
 		int max = 0;
 		for (int i = 0; i<size; i++) {
 			if (max < arr[i]) {
@@ -99,54 +100,58 @@ namespace baron {
 		merge(l, l1, l2);
 	}
 
+
 	template <typename T>
-	class PileCompare {
+	struct PileElement {
+		T element;
+		PileElement* backPointer;
+
+		PileElement(T e, PileElement* bp) : element(e), backPointer(bp) {}
+	};
+
+	template <typename T>
+	class PileCompareGreater {
 	public:
-		bool operator() (const std::stack<T>& pile1, const std::stack<T>& pile2) {
-			return pile1.top() > pile2.top();
+		bool operator() (const std::stack<PileElement<T>*>& pile1, const std::stack<PileElement<T>*>& pile2) {
+			return pile1.top()->element > pile2.top()->element;
 		}
 	};
 
 	template <typename T>
-	std::vector<T> patienceSort(std::vector<T>& arr) {
-		std::vector<T>  longestIncreasingSubsequence;
-		std::vector<std::stack<T>> piles;
-		std::stack<T> first;
-		first.push(arr[0]);
-		piles.push_back(first);
-		bool pushed = false;
-		int size = arr.size();
-		for (int i = 1; i<size; i++) {
-			for (std::stack<T>& stack: piles) {
-				if (arr[i]<stack.top()) {
-					stack.push(arr[i]);
-					pushed = true;
-					break;
-				}
+	class PileCompareLess {
+	public:
+		bool operator() (const std::stack<PileElement<T>*>& pile1, const std::stack<PileElement<T>*>& pile2) {
+			return pile1.top()->element < pile2.top()->element;
+		}
+	};
+
+	template <typename T>
+	std::pair<std::vector<T>, std::vector<T>> patienceSort(const std::vector<T>& arr) {
+		using Pile = std::stack<PileElement<T>*>;
+		std::vector<T> longestIncreasingSubsequence;
+		std::vector<T> sorted;
+		std::vector<Pile> piles({ Pile({ new PileElement<T>(arr[0], nullptr) }) });
+		size_t arrSize = arr.size();
+
+		for (int i = 1; i<arrSize; i++) {
+			typename std::vector<Pile>::iterator iter = std::lower_bound(piles.begin(), piles.end(), Pile({ new PileElement<T>(arr[i], nullptr) }), PileCompareLess<T>());
+			if (iter != piles.end()) {
+				iter->push(new PileElement<T>(arr[i], (iter != piles.begin()) ? std::prev(iter)->top() : nullptr));
+			} else {
+				piles.push_back({ Pile({ new PileElement<T>(arr[i], std::prev(iter)->top()) }) });
 			}
-			if (!pushed) {
-				if (longestIncreasingSubsequence.empty()) {
-					longestIncreasingSubsequence.push_back(piles[0].top());
-				}
-				longestIncreasingSubsequence.push_back(arr[i]);
-				std::stack<T> nextPile;
-				nextPile.push(arr[i]);
-				piles.push_back(nextPile);
-			}
-			pushed = false;
 		}
 
-		arr.clear();
-
-		std::priority_queue<std::stack<T>, std::vector<std::stack<T>>, PileCompare<T>> heap;
-
-		for (std::stack<T>& pile : piles) {
-			heap.push(pile);
+		longestIncreasingSubsequence.push_back(piles.back().top()->element);
+		for (PileElement<T>* pe = piles.back().top()->backPointer; pe != nullptr; pe = pe->backPointer) {
+			longestIncreasingSubsequence.push_back(pe->element);
 		}
+		std::reverse(longestIncreasingSubsequence.begin(), longestIncreasingSubsequence.end());
 
+		std::priority_queue<Pile, std::vector<Pile>, PileCompareGreater<T>> heap(piles.begin(), piles.end());
 		while (!heap.empty()) {
-			std::stack<T> temp = heap.top();
-			arr.push_back(temp.top());
+			Pile temp = heap.top();
+			sorted.push_back(temp.top()->element);
 			heap.pop();
 			temp.pop();
 			if (!temp.empty()) {
@@ -154,8 +159,9 @@ namespace baron {
 			}
 		}
 
-		return longestIncreasingSubsequence;
+		return std::make_pair(sorted, longestIncreasingSubsequence);
 	}
+
 }
 
 #endif // !SORT_HPP
