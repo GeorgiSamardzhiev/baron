@@ -5,6 +5,7 @@
 #include <stack>
 #include <queue>
 #include <algorithm>
+#include <iterator>
 
 namespace baron {
 
@@ -160,6 +161,41 @@ namespace baron {
 		}
 
 		return std::make_pair(sorted, longestIncreasingSubsequence);
+	}
+
+	template <typename T>
+	unsigned int partition(T* arr, unsigned int l, unsigned int h) {
+		T pivot = arr[l];
+		--l; ++h;
+
+		while (true) {
+			do {
+				++l;
+			} while (arr[l] < pivot);
+			do {
+				--h;
+			} while (arr[h] > pivot);
+
+			if (l >= h) {
+				return l;
+			}
+			std::swap(arr[l], arr[h]);
+		}
+
+	}
+
+	template <typename T>
+	void quickSort(T* arr, unsigned int l, unsigned int h) {
+		while (l<h) {
+			unsigned int m = partition(arr, l, h);
+			if (m-l < h-m) {
+				quickSort(arr, l, m == 0 ? 0 : m-1);
+				l = m+1;
+			} else {
+				quickSort(arr, m+1, h);
+				h = m-1;
+			}
+		}
 	}
 
 }
