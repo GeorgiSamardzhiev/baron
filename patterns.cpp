@@ -1,6 +1,6 @@
-#include <vector>
-#include <cstring>
 #include <stdio.h>
+#include <cstring>
+#include "patterns.h"
 
 namespace baron {
     std::vector<int> prepare_lps(const char *pattern) {
@@ -29,7 +29,7 @@ namespace baron {
     std::vector<int> pattern_search_kmp(const char *text, const char *pattern) {
         std::vector<int> result;
 
-        auto lps = prepare_lps(pattern);
+        std::vector<int> lps = prepare_lps(pattern);
         int pattern_length = strlen(pattern);
         int i = 0;
         int j = 0;
