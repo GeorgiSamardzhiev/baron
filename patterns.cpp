@@ -4,7 +4,7 @@
 
 namespace baron {
     std::vector<int> prepare_lps(const char *pattern) {
-        int pattern_length = strlen(pattern);
+        size_t pattern_length = strlen(pattern);
         std::vector<int> lps(pattern_length);
         lps[0] = 0;
 
@@ -33,7 +33,9 @@ namespace baron {
         int pattern_length = strlen(pattern);
         int i = 0;
         int j = 0;
-        while (i < strlen(text)) {
+
+	size_t n = strlen(text);
+        while (i < n) {
             if (j == pattern_length) {
                 result.push_back(i - j);
                 j = lps[j - 1];
