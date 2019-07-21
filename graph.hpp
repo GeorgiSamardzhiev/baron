@@ -38,26 +38,26 @@ namespace baron {
 			try {
 				dist.at(vertex);
 			} catch (...) {
-				dist[vertex] = UINT_MAX;
+				dist[vertex] = INT_MAX;
 			}
 		}
 
 		void setDist2(std::unordered_map<Vertex, Weight>& dist, const Vertex& vertex) {
 			if (dist.find(vertex) == dist.end()) {
-				dist[vertex] = UINT_MAX;
+				dist[vertex] = INT_MAX;
 			}
 		}
 
 		bool dfsRecursive(const Vertex& start, const Vertex& end, std::unordered_set<Vertex>& visited) {
+			if (start == end) {
+				return true;
+			}
 			visited.insert(start);
 
 			typename Graph::iterator curNode = this->find(start);
 			for (typename std::vector<Edge<Vertex, Weight>>::iterator it = curNode->second.begin(); it != curNode->second.end(); ++it) {
-				if (visited.count((*it).vertex) == 0) {
-					if (start == end) {
-						return true;
-					}
-					return dfsRecursive((*it).vertex, end, visited);
+				if (visited.count((*it).vertex) == 0 && dfsRecursive((*it).vertex, end, visited)) {
+					return true;
 				}
 			}
 			return false;
@@ -126,7 +126,7 @@ namespace baron {
 							setDist2(dist, edge.vertex);
 							setDist2(dist, e.vertex);
 							if (marked.count(e.vertex) == 0 && e.weigth < dist[e.vertex]) {
-								priorityQueue.push(Edge<Vertex, Weight>(e.vertex, e.weigth));
+								priorityQueue.push(Edge<Vertex, Weight>(e.vertex, dist[e.vertex] = e.weigth));
 							}
 						}
 					} catch (...) {}
