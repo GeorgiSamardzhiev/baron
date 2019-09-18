@@ -20,7 +20,7 @@ namespace baron {
 	//bijective f:ZxZ->N
 	unsigned long long integerPairToNaturalBijection(long long x, long long y);
 
-	//bijective f:ZxZ->N
+	//bijective f:ZxZ->Z
 	long long integerPairToIntegerlBijection(long long x, long long y);
 
 }
