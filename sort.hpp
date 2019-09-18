@@ -108,6 +108,9 @@ namespace baron {
 
 	template <typename T>
 	std::pair<std::vector<T>, std::vector<T>> patienceSort(const std::vector<T>& arr) {
+		if (arr.size() == 0) {
+			return std::make_pair(std::vector<T>(), std::vector<T>());
+		}
 		using Pile = std::stack<PileElement<T>*>;
 		std::vector<T> longestIncreasingSubsequence;
 		std::vector<T> sorted;
@@ -134,6 +137,7 @@ namespace baron {
 			Pile temp = heap.top();
 			sorted.push_back(temp.top()->element);
 			heap.pop();
+			delete temp.top();
 			temp.pop();
 			if (!temp.empty()) {
 				heap.push(temp);

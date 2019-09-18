@@ -1,8 +1,8 @@
 #include "sort.hpp"
 
-namespace baron{
+namespace baron {
 
-	void countingSort(int* arr, const int& size){
+	void countingSort(int* arr, const int& size) {
 		int max = 0;
 		for (int i = 0; i<size; i++) {
 			if (max < arr[i]) {
@@ -22,6 +22,7 @@ namespace baron{
 				arr[j++] = i;
 			}
 		}
+		delete[] help;
 	}
 
 }
