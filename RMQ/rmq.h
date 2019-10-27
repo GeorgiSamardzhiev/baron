@@ -20,11 +20,13 @@ private:
 
 	Array array; ///< Array on which we are working
 	Table index; ///< Index used by queries
+	Array log; ///< log[k] == l iff 2^l <= k < 2^(l+1)
+	Array power; ///< pow[d] == 2 ^ d - 1
 
 	int flags; ///< Flags used to indicate state of the algorithm
 
 public:
-	RMQ(const Array &array = {});
+	RMQ(const Array &array = {}, bool useNaive = false);
 
 	/// Change the array we are working on.
 	/// Invalidates the index if one is created.
