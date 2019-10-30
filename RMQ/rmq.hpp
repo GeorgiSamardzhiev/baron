@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RMQ_HPP
+#define RMQ_HPP
 
 #include <vector>
 
@@ -49,3 +50,5 @@ private:
 };
 
 } // namespace baron
+
+#endif // RMQ_HPP

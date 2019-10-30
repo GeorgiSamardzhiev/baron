@@ -1,4 +1,4 @@
-#include <rmq.h>
+#include "rmq.hpp"
 
 // C includes
 #include <cassert>

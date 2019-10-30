@@ -1,6 +1,6 @@
 #include <cstdio>
 
-#include <rmq.h>
+#include "rmq.hpp"
 
 using baron::RMQ;
 
