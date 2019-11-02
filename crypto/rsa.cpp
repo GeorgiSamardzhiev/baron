@@ -1,7 +1,7 @@
 
 #include "rsa.hpp"
-#include "gcd.hpp"
-#include "arithmetic.hpp"
+#include "../math/gcd.hpp"
+#include "../math/arithmetic.hpp"
 
 namespace baron {
 
