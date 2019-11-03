@@ -4,7 +4,7 @@
 #include <cassert>
 #include <map>
 
-#include "../../../RMQ/RMQ/rmq.h"
+#include "../RangeMinimumQuery/rmq.hpp"
 
 // Example node-based tree structure
 struct Node {

@@ -1,4 +1,4 @@
-#include "rmq_pm1.h"
+#include "rmq_pm1.hpp"
 
 using baron::RMQPM1;
 
