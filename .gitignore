@@ -1,0 +1,13 @@
+#visual studio code
+.vscode/
+*.pdb
+*.ilk
+*.obj
+
+#visual studio
+.vs/
+
+#generated files
+*.o
+*.exe
+*.out
