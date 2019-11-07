@@ -198,7 +198,7 @@ std::vector<int> RMQPM1::generateNextVector(int n, int &numD) {
 		result[i] += result[i - 1];
 
 		n /= 2;
-		++i;
+		--i;
 	}
 
 	return std::move(result);

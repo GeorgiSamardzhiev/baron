@@ -4,7 +4,7 @@
 #include <cassert>
 #include <map>
 
-#include "../RangeMinimumQuery/rmq.hpp"
+#include "rmq.hpp"
 
 // Example node-based tree structure
 struct Node {
@@ -25,7 +25,7 @@ private:
 	std::vector<int> depth;
 	std::vector<Node*> time;
 	std::map<Node*, int> start; ///< Only needed for LCA query, mapping can be outside of the class
-	std::vector<baron::RMQ> RMQTable;
+	std::vector<RMQ> RMQTable;
 	std::vector<int> Ind;
 	baron::RMQ rmqLogM;
 	std::vector<int> numD;
